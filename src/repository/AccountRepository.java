@@ -15,6 +15,6 @@ public class AccountRepository {
     }
 
     public List<Account> findAll() {
-        return new ArrayList<>();
+        return new ArrayList<>(accountByNumber.values());
     }
 }
