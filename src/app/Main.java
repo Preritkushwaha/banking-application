@@ -1,10 +1,16 @@
 package app;
 
+import service.BankService;
+import service.impl.BankServiceImpl;
+
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
+        BankService bankService = new BankServiceImpl();
+
         boolean running = true;
 
         System.out.println("Welcome to Console Bank");
@@ -25,7 +31,7 @@ public class Main {
             System.out.println("CHOICE: " + choice);
 
             switch (choice) {
-                case "1" -> openAccount(scanner);
+                case "1" -> openAccount(scanner, bankService);
                 case "2" -> deposit(scanner);
                 case "3" -> withdraw(scanner);
                 case "4" -> transfer(scanner);
@@ -38,16 +44,18 @@ public class Main {
 
     }
 
-    private static void openAccount(Scanner scanner) {
+    private static void openAccount(Scanner scanner, BankService bankService) {
         System.out.println("Customer name: ");
         String name = scanner.nextLine().trim();
         System.out.println("Customer email: ");
         String email = scanner.nextLine().trim();
         System.out.println("Account Type (SAVING/CURRENT): ");
-        String type = scanner.nextLine().trim();
+        String accountType = scanner.nextLine().trim();
         System.out.println("Initial deposit (optional, blank for 0): ");
         String amountStr = scanner.nextLine().trim();
         Double initial = Double.valueOf(amountStr);
+
+        bankService.openAccount(name, email, accountType);
     }
 
     private static void accountStatement(Scanner scanner) {
