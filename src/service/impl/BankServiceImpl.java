@@ -35,6 +35,13 @@ public class BankServiceImpl implements BankService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deposit(String accountNumber, double amount, String deposit) {
+        Account account = accountRepository.findByNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found: " + accountNumber));
+        account.setBalance(Double.valueOf(account.getBalance() + deposit));
+    }
+
     private String getAccountNumber() {
         int size = accountRepository.findAll().size() + 1;
         String acNumber = String.format("AC%06d", size);
