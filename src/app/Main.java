@@ -58,7 +58,7 @@ public class Main {
 
         String acNum = bankService.openAccount(name, email, accountType);
         if(initial > 0){
-            bankService.deposit();
+            bankService.deposit(acNum, initial, "Initial Deposit");
         }
         System.out.println("Account Opened: " + acNum);
     }
