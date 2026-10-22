@@ -17,4 +17,6 @@ public interface BankService {
     void transfer(String from, String to, Double amount, String transfer);
 
     List<Transaction> getStatement(String account);
+
+    List<Account> searchByCustomerName(String q);
 }
