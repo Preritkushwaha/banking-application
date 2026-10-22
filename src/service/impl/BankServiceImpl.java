@@ -64,6 +64,29 @@ public class BankServiceImpl implements BankService {
 
     }
 
+    @Override
+    public void transfer(String fromAcc, String toAcc, Double amount, String note) {
+        if(fromAcc.equals(toAcc))
+            throw new RuntimeException("Cannot Transfer to your own account");
+        Account from = accountRepository.findByNumber(fromAcc)
+                .orElseThrow(() -> new RuntimeException("Account not found: " + fromAcc));
+        Account to = accountRepository.findByNumber(toAcc)
+                .orElseThrow(() -> new RuntimeException("Account not found: " + toAcc));
+        if(from.getBalance().compareTo(amount) < 0)
+            throw new RuntimeException("Insufficient Balance");
+
+        from.setBalance(from.getBalance() - amount);
+        to.setBalance(to.getBalance() + amount);
+
+        Transaction fromTransaction = new Transaction(from.getAccountNumber(),
+                amount, UUID.randomUUID().toString(), note, LocalDateTime.now(), Type.TRANSFER_OUT);
+        transactionRepository.add(fromTransaction);
+
+        Transaction toTransaction = new Transaction(from.getAccountNumber(),
+                amount, UUID.randomUUID().toString(), note, LocalDateTime.now(), Type.TRANSFER_IN);
+        transactionRepository.add(fromTransaction);
+    }
+
     private String getAccountNumber() {
         int size = accountRepository.findAll().size() + 1;
         String acNumber = String.format("AC%06d", size);

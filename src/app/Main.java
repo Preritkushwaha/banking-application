@@ -35,7 +35,7 @@ public class Main {
                 case "1" -> openAccount(scanner, bankService);
                 case "2" -> deposit(scanner, bankService);
                 case "3" -> withdraw(scanner, bankService);
-                case "4" -> transfer(scanner);
+                case "4" -> transfer(scanner, bankService);
                 case "5" -> accountStatement(scanner);
                 case "6" -> listStatement(scanner, bankService);
                 case "7" -> searchAccounts(scanner);
@@ -49,9 +49,9 @@ public class Main {
         System.out.println("Customer name: ");
         String name = scanner.nextLine().trim();
         System.out.println("Customer email: ");
-        String email = scanner.nextLine().trim();
+        String email = scanner.nextLine().toLowerCase().trim();
         System.out.println("Account Type (SAVING/CURRENT): ");
-        String accountType = scanner.nextLine().trim();
+        String accountType = scanner.nextLine().toUpperCase().trim();
         System.out.println("Initial deposit (optional, blank for 0): ");
         String amountStr = scanner.nextLine().trim();
         Double initial = Double.valueOf(amountStr);
@@ -70,7 +70,7 @@ public class Main {
         System.out.println("Account Number: ");
         String accountNumber = scanner.nextLine().trim();
         System.out.println("Amount: ");
-        double amount = scanner.nextInt();
+        Double amount = Double.valueOf(scanner.nextLine().trim());
         bankService.deposit(accountNumber, amount, "Deposit");
         System.out.println("Deposited");
     }
@@ -79,12 +79,20 @@ public class Main {
         System.out.println("Account Number: ");
         String accountNumber = scanner.nextLine().trim();
         System.out.println("Amount: ");
-        double amount = scanner.nextInt();
+        Double amount = Double.valueOf(scanner.nextLine().trim());
         bankService.withdraw(accountNumber, amount, "Withdraw");
         System.out.println("Withdrawn");
     }
 
-    private static void transfer(Scanner scanner) {
+    private static void transfer(Scanner scanner, BankService bankService) {
+        System.out.println("From Account: ");
+        String from = scanner.nextLine().trim();
+        System.out.println("To Account: ");
+        String to = scanner.nextLine().trim();
+        System.out.println("Amount: ");
+        Double amount = Double.valueOf(scanner.nextLine().trim());
+        bankService.transfer(from, to, amount, "Transfer");
+        System.out.println("Transferred");
     }
 
     private static void listStatement(Scanner scanner, BankService bankService) {
